@@ -54,16 +54,16 @@ class Jogador : public Personagem {
                 }    
             }
             if (controle->left) {
-                move (-1,0);
+                move (-2,0);
             }
             if (controle->right) {
-                move (1,0);
+                move (2,0);
             }
             if (controle->up) {
-                move (0,-1);
+                move (0,-2);
             }
             if (controle->down) {
-                move (0,+1);
+                move (0,+2);
             }
         }
         if (_estado == ANDANDO) {

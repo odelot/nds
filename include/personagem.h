@@ -3,6 +3,7 @@
 
 #include <nds.h>
 #include <math.h>
+#include <stdio.h>
 #include "sprite.h"
 #include "sprites.h"
 #include "controle.h"
@@ -10,7 +11,6 @@
 
 
 
-#define SUB_ESTADOS_TAM 13
 
 //definindo estados
 #define IDLE 0
@@ -29,8 +29,7 @@ class Personagem {
         /*_estado = IDLE;
         _subEstado = IDLE_1;*/
         _framesDoSprite = 0;
-        _framesDaMovimentacao = 0;
-
+        
         _estadoAntigo = 255;
         _subEstadoAntigo = 255;
 
@@ -45,9 +44,8 @@ class Personagem {
         _speedY = 0;
 
 
-        _maxSpeed = 2;
-        _maxFramesDaMovimentacao = 2;
-
+        _maxSpeed = 16;
+        
         
 
     }
@@ -100,7 +98,7 @@ class Personagem {
         }*/
         _estado = ANDANDO;
         _speedX += speedX;
-        _speedY += speedY;
+        _speedY += speedY;               
 
         if (_speedX > _maxSpeed) {
             _speedX = _maxSpeed;
@@ -115,20 +113,7 @@ class Personagem {
             _speedY = -_maxSpeed;
         }
 
-        /*while ( (abs (_speedX) + abs (_speedY)) > _maxSpeed ) {
-            if (_speedX > 0) {
-                _speedX -=1;
-            }
-            if (_speedX < 0) {
-                _speedX +=1;
-            }
-            if (_speedY > 0) {
-                _speedY -=1;
-            }
-            if (_speedY < 0) {
-                _speedY +=1;
-            }
-        }*/
+       
     }
 
     virtual void updateLogic (Controle * controle) = 0;
@@ -165,9 +150,19 @@ class Personagem {
     }
 
     void updatePos () {
-        //if (_framesDaMovimentacao == _maxFramesDaMovimentacao) {
-            _spriteAtual->x += _speedX >> 1;
-            _spriteAtual->y +=  _speedY >> 1;
+            
+            int speedX, speedY;
+            speedX = (_speedX >> 3 );
+            speedY = (_speedY >> 3 );
+            char Text[32];
+            sprintf(Text, "u: speedX %d %d\n", _speedX, speedX);
+            iprintf(Text);
+            sprintf(Text, "u: speedY %d %d\n", _speedY, speedY);
+            iprintf(Text);
+            
+            _spriteAtual->x += speedX;
+            _spriteAtual->y +=  speedY;
+
             if (_speedX > 0) {
                 _speedX -=1;
                 _spriteAtual->hFlip = false;
@@ -182,10 +177,7 @@ class Personagem {
             if (_speedY < 0) {
                 _speedY +=1;
             }
-        //    _framesDaMovimentacao = 0;
-        //} else {
-        //    _framesDaMovimentacao += 1;
-       //}
+    
     }
 
     protected:
@@ -205,8 +197,6 @@ class Personagem {
     int _x;
     int _y;
 
-    unsigned short _framesDaMovimentacao; 
-    unsigned short _maxFramesDaMovimentacao; 
     int _speedX;
     int _speedY;
     int _maxSpeed;

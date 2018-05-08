@@ -8,7 +8,9 @@
 
 #include <nds.h>
 #include <assert.h>
+#include <stdio.h>
 #include "sprites.h"
+
 
 /* Backgrounds */
 /* Sprites */
@@ -16,6 +18,7 @@
 #include "personagem.h"
 #include "oam-manager.h"
 #include "jogador.h"
+#include "npc.h"
 
 OAMTable *oam;
 
@@ -172,6 +175,8 @@ int main() {
     lcdMainOnBottom();
     initVideo();
     initBackgrounds();
+    consoleDemoInit();
+    
 
     /* Set up a few sprites. */
     SpriteInfo spriteInfo[SPRITE_COUNT];
@@ -181,6 +186,9 @@ int main() {
     OAM_Manager oam_manager (spriteInfo,oam);
     Jogador jogador (spriteInfo, &oam_manager);
     jogador.initGfx ();
+
+    NPC npc (spriteInfo, &oam_manager);
+    npc.initGfx ();
 
 
     /*
@@ -196,12 +204,14 @@ int main() {
      * completion. */
     controle.reset ();
     for (;;) {
+        consoleClear ();
+        
         /* Update the game state. */
         updateInput();
         handleInput();
 
         jogador.update (&controle);
-        
+        npc.update (NULL);
 
        
         

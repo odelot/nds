@@ -32,5 +32,6 @@
 *.app
 
 *.nds
+*.elf
 
 build
